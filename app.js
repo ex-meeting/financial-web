@@ -567,7 +567,7 @@ categorySelect.addEventListener("change", renderDynamicFields);
 form.addEventListener("input", updateSummary);
 form.addEventListener("change", updateSummary);
 
-const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/a/macros/it.kmitl.ac.th/s/AKfycbynD1MIeUtgYIWPo_nsfbPizr-DqmXkYUapvWNPXpJ45X8qZ7vSYGxqUKK-_ZT-sT8w/exec";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbynD1MIeUtgYIWPo_nsfbPizr-DqmXkYUapvWNPXpJ45X8qZ7vSYGxqUKK-_ZT-sT8w/exec";
 
 async function saveToGoogleSheet(payload) {
   await fetch(GOOGLE_SHEET_WEB_APP_URL, {
