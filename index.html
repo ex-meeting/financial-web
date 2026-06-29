@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>แบบฟอร์มบันทึกข้อมูลการเบิกจ่าย งปม. อาจารย์ประจำ</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <button class="icon-button" type="button" aria-label="เมนู">
+          <span></span><span></span><span></span>
+        </button>
+        <div>
+          <p>ระบบบริหารจัดการการเบิกจ่ายงบประมาณ</p>
+          <strong>คณะเทคโนโลยีสารสนเทศ, สจล.</strong>
+        </div>
+      </div>
+      <div class="topbar__user" aria-label="ผู้ใช้งาน">
+        <span class="avatar">IT</span>
+        <div>
+          <strong>เจ้าหน้าที่การเงิน</strong>
+          <p>ร่างรายการใหม่</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="summary-panel" aria-label="สรุปข้อมูลการเบิกจ่าย">
+        <h2>สรุปข้อมูลการเบิกจ่าย</h2>
+        <dl class="summary-list">
+          <div>
+            <dt>เลขที่หนังสือ</dt>
+            <dd id="summaryDocNo">ยังไม่ได้ระบุ</dd>
+          </div>
+          <div>
+            <dt>วันที่ลงหนังสือ</dt>
+            <dd id="summaryDate">ยังไม่ได้ระบุ</dd>
+          </div>
+          <div>
+            <dt>ชื่อผู้ขอเบิก</dt>
+            <dd id="summaryTeacher">ยังไม่ได้เลือก</dd>
+          </div>
+          <div>
+            <dt>หมวดค่าใช้จ่าย</dt>
+            <dd id="summaryCategory">ยังไม่ได้เลือก</dd>
+          </div>
+          <div>
+            <dt>จำนวนเงิน</dt>
+            <dd id="summaryAmount">0.00 บาท</dd>
+          </div>
+        </dl>
+
+        <section class="steps" aria-label="ขั้นตอนการดำเนินการ">
+          <h2>ขั้นตอนการดำเนินการ</h2>
+          <ol>
+            <li class="is-active">บันทึกรายการ</li>
+            <li>ตรวจสอบข้อมูล</li>
+            <li>อนุมัติ</li>
+            <li>ดำเนินการจ่าย</li>
+          </ol>
+        </section>
+      </aside>
+
+      <section class="content">
+        <div class="page-title">
+          <div>
+            <h1>แบบฟอร์มบันทึกข้อมูลการเบิกจ่าย งปม. อาจารย์ประจำ</h1>
+            <p>คณะเทคโนโลยีสารสนเทศ, สจล.</p>
+          </div>
+          <span class="status-badge">ร่าง</span>
+        </div>
+
+        <form id="expenseForm" class="form-shell">
+          <section class="form-section" aria-labelledby="section-basic">
+            <div class="section-heading">
+              <h2 id="section-basic">ข้อมูลหนังสือและผู้ขอเบิก</h2>
+            </div>
+            <div class="form-grid form-grid--three">
+              <label class="field">
+                <span>เลขที่หนังสือ <b>*</b></span>
+                <input id="docNo" name="docNo" type="text" placeholder="เช่น อว 0702.02/1234" required />
+              </label>
+              <label class="field">
+                <span>ลงวันที่ <b>*</b></span>
+                <div class="date-picker" data-thai-date-picker>
+                  <input id="docDate" name="docDate" type="text" placeholder="วว/ดด/ปป" inputmode="numeric" autocomplete="off" pattern="\d{2}/\d{2}/\d{2}" required />
+                  <button class="date-picker__button" type="button" aria-label="เปิดปฏิทินลงวันที่">▾</button>
+                  <div class="date-picker__panel" hidden></div>
+                </div>
+              </label>
+              <label class="field">
+                <span>ชื่อผู้ขอเบิก <b>*</b></span>
+                <select id="teacherName" name="teacherName" required></select>
+              </label>
+            </div>
+            <label class="field">
+              <span>หมวดหมู่ค่าใช้จ่าย <b>*</b></span>
+              <select id="category" name="category" required></select>
+            </label>
+          </section>
+
+          <section class="form-section" aria-labelledby="section-detail">
+            <div class="section-heading">
+              <h2 id="section-detail">รายละเอียดการเบิกจ่าย</h2>
+              <p id="categoryHint">เลือกหมวดหมู่ค่าใช้จ่ายเพื่อแสดงช่องกรอกข้อมูลที่เกี่ยวข้อง</p>
+            </div>
+            <div id="dynamicFields" class="dynamic-fields"></div>
+          </section>
+
+          <section class="form-section" aria-labelledby="section-attachments">
+            <div class="section-heading">
+              <h2 id="section-attachments">เอกสารแนบและหมายเหตุ</h2>
+            </div>
+            <fieldset class="option-group option-group--inline">
+              <legend>เอกสารแนบ</legend>
+              <label><input type="checkbox" name="attachments" value="สำเนาหนังสือเชิญ / หนังสืออนุมัติ" /> สำเนาหนังสือเชิญ / หนังสืออนุมัติ</label>
+              <label><input type="checkbox" name="attachments" value="กำหนดการ / รายละเอียดโครงการ" /> กำหนดการ / รายละเอียดโครงการ</label>
+              <label><input type="checkbox" name="attachments" value="ใบเสร็จรับเงิน / ใบกำกับภาษี" /> ใบเสร็จรับเงิน / ใบกำกับภาษี</label>
+              <label><input type="checkbox" name="attachments" value="อื่น ๆ" /> อื่น ๆ</label>
+            </fieldset>
+            <div class="form-grid form-grid--two">
+              <label class="field">
+                <span>เอกสารอื่น ๆ</span>
+                <input name="otherAttachment" type="text" placeholder="ระบุเอกสารแนบอื่น ๆ" />
+              </label>
+              <label class="field">
+                <span>หมายเหตุ</span>
+                <input name="note" type="text" placeholder="ระบุหมายเหตุเพิ่มเติม" />
+              </label>
+            </div>
+          </section>
+
+          <div class="action-bar">
+            <button class="button button--primary" type="submit">บันทึกข้อมูล</button>
+            <button class="button" id="resetButton" type="button">ล้างฟอร์ม</button>
+            <button class="button" id="exportButton" type="button">ส่งออก JSON</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <dialog id="resultDialog" class="result-dialog">
+      <form method="dialog">
+        <div class="dialog-head">
+          <h2>ข้อมูลที่บันทึก</h2>
+          <button class="icon-close" value="close" aria-label="ปิด">×</button>
+        </div>
+        <pre id="resultJson"></pre>
+        <menu>
+          <button class="button button--primary" value="close">ปิด</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
