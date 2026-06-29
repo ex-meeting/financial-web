@@ -567,11 +567,25 @@ categorySelect.addEventListener("change", renderDynamicFields);
 form.addEventListener("input", updateSummary);
 form.addEventListener("change", updateSummary);
 
-form.addEventListener("submit", (event) => {
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/a/macros/it.kmitl.ac.th/s/AKfycbxipKfuYR_Y8woXCpf0Vmn61JAePwoh-PICajcRnqZy9SSKWqbMK4LmI1DrTeYXKDCy/exec";
+
+async function saveToGoogleSheet(payload) {
+  await fetch(GOOGLE_SHEET_WEB_APP_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(payload)
+  });
+}
+
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!form.reportValidity()) return;
   const payload = getFormData();
   localStorage.setItem("facultyExpenseDraft", JSON.stringify(payload));
+  await saveToGoogleSheet(payload);
   showResult(payload);
 });
 
