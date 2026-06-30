@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>รายงานข้อมูลการเบิกจ่าย</title>
+    <link rel="stylesheet" href="styles.css?v=20260630-3" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <a class="nav-link" href="index.html">← กลับไปหน้าฟอร์ม</a>
+        <div>
+          <p>ระบบบริหารจัดการการเบิกจ่ายงบประมาณ</p>
+          <strong>รายงานข้อมูลจาก WebForm (Responses)</strong>
+        </div>
+      </div>
+      <div class="topbar__user" aria-label="สถานะรายงาน">
+        <span class="avatar">R</span>
+        <div>
+          <strong id="reportStatus">พร้อมโหลดข้อมูล</strong>
+          <p id="lastUpdated">ยังไม่ได้โหลดข้อมูล</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="report-layout">
+      <section class="report-toolbar" aria-label="ตัวกรองรายงาน">
+        <label class="field">
+          <span>ค้นหา</span>
+          <input id="searchInput" type="search" placeholder="เลขที่หนังสือ, ชื่อ, หมวด, หมายเหตุ" />
+        </label>
+        <label class="field">
+          <span>ปีงบประมาณ</span>
+          <select id="fiscalYearFilter">
+            <option value="">ทุกปีงบประมาณ</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>หมวดค่าใช้จ่าย</span>
+          <select id="categoryFilter">
+            <option value="">ทุกหมวด</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>ผู้ขอเบิก</span>
+          <select id="teacherFilter">
+            <option value="">ทุกคน</option>
+          </select>
+        </label>
+        <button class="button button--primary" id="reloadButton" type="button">โหลดข้อมูลใหม่</button>
+      </section>
+
+      <section class="report-cards" aria-label="สรุปรายงาน">
+        <article>
+          <span>จำนวนรายการ</span>
+          <strong id="totalRecords">0</strong>
+        </article>
+        <article>
+          <span>ผลลัพธ์หลังกรอง</span>
+          <strong id="filteredRecords">0</strong>
+        </article>
+        <article>
+          <span>ยอดรวม</span>
+          <strong id="totalAmount">0.00 บาท</strong>
+        </article>
+      </section>
+
+      <section class="report-table-wrap" aria-label="ตารางรายงาน">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>แถว</th>
+              <th>เวลาบันทึก</th>
+              <th>เลขที่หนังสือ</th>
+              <th>ลงวันที่</th>
+              <th>ปีงบประมาณ</th>
+              <th>ผู้ขอเบิก</th>
+              <th>หมวดค่าใช้จ่าย</th>
+              <th>จำนวนเงิน</th>
+              <th>รายละเอียด</th>
+              <th>หมายเหตุ</th>
+            </tr>
+          </thead>
+          <tbody id="reportBody">
+            <tr>
+              <td colspan="10" class="empty-cell">กด “โหลดข้อมูลใหม่” เพื่อแสดงรายงาน</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="report.js?v=20260630-3"></script>
+  </body>
+</html>
