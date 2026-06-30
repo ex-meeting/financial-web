@@ -1,4 +1,4 @@
-const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzrbk1RXcDRXPAhj9nmwivp-rA1VQkuI4oc9GOAl-BzzC4dK-Bwt-cNeoQIWCLn3DA9/exec";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyycg6JrhmbMHLcS20WRhwgjHE_B5_tRCEcJMyV5AJCNc2o5lXOKMqmBoTKY2-0HOa8/exec";
 
 const state = {
   records: [],
