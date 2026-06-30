@@ -302,6 +302,36 @@ function createField(field) {
     return label;
   }
 
+  if (field.type === "date") {
+    const picker = document.createElement("div");
+    picker.className = "date-picker";
+    picker.dataset.thaiDatePicker = "";
+
+    const input = document.createElement("input");
+    input.name = field.name;
+    input.type = "text";
+    input.placeholder = "วว/ดด/ปป";
+    input.inputMode = "numeric";
+    input.autocomplete = "off";
+    input.pattern = "\\d{2}/\\d{2}/\\d{2}";
+    input.required = Boolean(field.required);
+
+    const button = document.createElement("button");
+    button.className = "date-picker__button";
+    button.type = "button";
+    button.setAttribute("aria-label", `เปิดปฏิทิน${field.label}`);
+    button.textContent = "▾";
+
+    const panel = document.createElement("div");
+    panel.className = "date-picker__panel";
+    panel.hidden = true;
+
+    picker.append(input, button, panel);
+    label.append(picker);
+    initThaiDatePicker(picker);
+    return label;
+  }
+
   const input = document.createElement("input");
   input.name = field.name;
   input.type = field.type === "money" ? "number" : field.type;
@@ -510,7 +540,7 @@ function initThaiDatePicker(picker) {
       const date = new Date(year, month, day);
       const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
       const isToday = date.toDateString() === today.toDateString();
-      days += `<button type="button" class="${isSelected ? "is-selected" : ""} ${isToday ? "is-today" : ""}" data-day="${day}">${day}</button>`;
+      days += `<button type="button" class="date-picker__day ${isSelected ? "is-selected" : ""} ${isToday ? "is-today" : ""}" data-day="${day}">${day}</button>`;
     }
 
     panel.innerHTML = `
