@@ -39,6 +39,10 @@
             <dd id="summaryDate">ยังไม่ได้ระบุ</dd>
           </div>
           <div>
+            <dt>ปีงบประมาณ</dt>
+            <dd id="summaryFiscalYear">ยังไม่ได้ระบุ</dd>
+          </div>
+          <div>
             <dt>ชื่อผู้ขอเบิก</dt>
             <dd id="summaryTeacher">ยังไม่ได้เลือก</dd>
           </div>
@@ -77,7 +81,7 @@
             <div class="section-heading">
               <h2 id="section-basic">ข้อมูลหนังสือและผู้ขอเบิก</h2>
             </div>
-            <div class="form-grid form-grid--three">
+            <div class="form-grid form-grid--four">
               <label class="field">
                 <span>เลขที่หนังสือ <b>*</b></span>
                 <input id="docNo" name="docNo" type="text" placeholder="เช่น อว 0702.02/1234" required />
@@ -89,6 +93,10 @@
                   <button class="date-picker__button" type="button" aria-label="เปิดปฏิทินลงวันที่">▾</button>
                   <div class="date-picker__panel" hidden></div>
                 </div>
+              </label>
+              <label class="field">
+                <span>ปีงบประมาณ <b>*</b></span>
+                <input id="fiscalYear" name="fiscalYear" type="number" min="2500" max="2700" placeholder="เช่น 2569" required />
               </label>
               <label class="field">
                 <span>ชื่อผู้ขอเบิก <b>*</b></span>
