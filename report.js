@@ -108,7 +108,7 @@ function applyFilters() {
 function createSearchText(record) {
   return [
     record.docNo,
-    record.docDate,
+    formatReportDate(record.docDate),
     record.fiscalYear,
     record.teacherName,
     record.category,
@@ -137,7 +137,7 @@ function renderRows() {
       <td>${escapeHtml(record.rowNumber)}</td>
       <td>${escapeHtml(record.timestamp)}</td>
       <td>${escapeHtml(record.docNo)}</td>
-      <td>${escapeHtml(record.docDate)}</td>
+      <td>${escapeHtml(formatReportDate(record.docDate))}</td>
       <td>${escapeHtml(record.fiscalYear)}</td>
       <td>${escapeHtml(record.teacherName)}</td>
       <td>${escapeHtml(record.category)}</td>
@@ -164,6 +164,23 @@ function getAmount(details) {
 
 function formatMoney(amount) {
   return `${amount.toLocaleString("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} บาท`;
+}
+
+function formatReportDate(value) {
+  if (!value) return "";
+  const text = String(value).trim();
+  const match = /^(\d{1,2})\/(\d{1,2})\/(\d{2})$/.exec(text);
+
+  if (match) {
+    return `${match[1].padStart(2, "0")}/${match[2].padStart(2, "0")}/${match[3]}`;
+  }
+
+  const parsed = new Date(text);
+  if (!Number.isNaN(parsed.getTime())) {
+    return `${String(parsed.getDate()).padStart(2, "0")}/${String(parsed.getMonth() + 1).padStart(2, "0")}/${String(parsed.getFullYear()).slice(-2)}`;
+  }
+
+  return text;
 }
 
 function escapeHtml(value) {
