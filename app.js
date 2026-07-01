@@ -630,7 +630,7 @@ docDateInput.addEventListener("change", syncFiscalYearFromDocDate);
 form.addEventListener("input", updateSummary);
 form.addEventListener("change", updateSummary);
 
-const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyycg6JrhmbMHLcS20WRhwgjHE_B5_tRCEcJMyV5AJCNc2o5lXOKMqmBoTKY2-0HOa8/exec";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzgv0iBmCXTu5J3rRvccsqXrwyZ-TOh2n9BM-HJyXKzZ2SA5n6Uku7EF4hnYd-WUC97/exec";
 
 async function saveToGoogleSheet(payload) {
   await fetch(GOOGLE_SHEET_WEB_APP_URL, {
