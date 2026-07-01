@@ -237,6 +237,7 @@ const resultJson = document.querySelector("#resultJson");
 const docDatePicker = document.querySelector("[data-thai-date-picker]");
 const docDateInput = document.querySelector("#docDate");
 const fiscalYearInput = document.querySelector("#fiscalYear");
+let shouldResetAfterResult = false;
 
 function option(value, label, selected = false) {
   const item = document.createElement("option");
@@ -431,7 +432,15 @@ function showResult(payload) {
     resultDialog.showModal();
   } else {
     alert(resultJson.textContent);
+    resetFormForNextEntry();
   }
+}
+
+function resetFormForNextEntry() {
+  form.reset();
+  renderDynamicFields();
+  localStorage.removeItem("facultyExpenseDraft");
+  shouldResetAfterResult = false;
 }
 
 const thaiMonths = [
@@ -640,11 +649,16 @@ form.addEventListener("submit", async (event) => {
   const payload = getFormData();
   localStorage.setItem("facultyExpenseDraft", JSON.stringify(payload));
   await saveToGoogleSheet(payload);
+  shouldResetAfterResult = true;
   showResult(payload);
 });
 
+resultDialog.addEventListener("close", () => {
+  if (shouldResetAfterResult) {
+    resetFormForNextEntry();
+  }
+});
+
 document.querySelector("#resetButton").addEventListener("click", () => {
-  form.reset();
-  renderDynamicFields();
-  localStorage.removeItem("facultyExpenseDraft");
+  resetFormForNextEntry();
 });
