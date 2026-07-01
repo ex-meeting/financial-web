@@ -88,6 +88,10 @@ const expenseCombos = [
   "ค่าที่พัก",
   "ค่าเบี้ยเลี้ยง",
   "ค่าเดินทาง",
+  "ค่าที่พัก+ค่าเบี้ยเลี้ยง",
+  "ค่าที่พัก+ค่าเดินทาง",
+  "ค่าเบี้ยเลี้ยง+ค่าเดินทาง",
+  "ค่าที่พัก+ค่าเบี้ยเลี้ยง+ค่าเดินทาง",
   "ค่าลงทะเบียน+ค่าที่พัก",
   "ค่าลงทะเบียน+ค่าเบี้ยเลี้ยง",
   "ค่าลงทะเบียน+ค่าเดินทาง",
@@ -100,8 +104,8 @@ const expenseCombos = [
 const categories = [
   {
     id: "advisor",
-    label: "4.1.1 ค่าตอบแทนอาจารย์ที่ปรึกษา",
-    group: "4.1 ค่าตอบแทน",
+    label: "ค่าตอบแทนอาจารย์ที่ปรึกษา",
+    group: "ค่าตอบแทน",
     fields: [
       { type: "radio", name: "advisorType", label: "ประเภทอาจารย์ที่ปรึกษา (ระดับการศึกษา)", options: studyExpenseTypes, required: true },
       { type: "select", name: "major", label: "สาขาวิชา", options: majors, required: true },
@@ -112,8 +116,8 @@ const categories = [
   },
   {
     id: "examCommittee",
-    label: "4.1.2 ค่ากรรมการสอบ",
-    group: "4.1 ค่าตอบแทน",
+    label: "ค่ากรรมการสอบ",
+    group: "ค่าตอบแทน",
     fields: [
       { type: "radio", name: "examType", label: "ประเภทกรรมการสอบ (ระดับการศึกษา)", options: examExpenseTypes, required: true },
       { type: "select", name: "major", label: "สาขาวิชา", options: majors, required: true },
@@ -124,8 +128,8 @@ const categories = [
   },
   {
     id: "examOperation",
-    label: "4.1.3 ค่าดำเนินการสอบ",
-    group: "4.1 ค่าตอบแทน",
+    label: "ค่าดำเนินการสอบ",
+    group: "ค่าตอบแทน",
     fields: [
       { type: "radio", name: "committeeType", label: "ประเภทกรรมการ", options: ["คุมสอบกลางภาค", "คุมสอบปลายภาค", "อำนวยการสอบกลางภาค", "อำนวยการสอบปลายภาค", "สอบสัมภาษณ์รับเข้า", "ออกข้อสอบเข้า", "ตรวจข้อสอบเข้า"], required: true },
       { type: "radio", name: "educationLevel", label: "ระดับการศึกษา", options: ["ปริญญาตรี", "ปริญญาโท", "ปริญญาเอก", "ปริญญาโท + เอก"], required: true },
@@ -135,8 +139,8 @@ const categories = [
   },
   {
     id: "teaching",
-    label: "4.1.4 ค่าสอน",
-    group: "4.1 ค่าตอบแทน",
+    label: "ค่าสอน",
+    group: "ค่าตอบแทน",
     fields: [
       { type: "radio", name: "teachingType", label: "ประเภทค่าสอน", options: ["เกินภาระงานสอน ป.ตรี", "เกินภาระงานสอน ป.โท", "ค่าตอบแทนหลักสูตร Inter"], required: true },
       { type: "text", name: "semester", label: "ภาคการศึกษา/ปีการศึกษา", required: true },
@@ -146,8 +150,8 @@ const categories = [
   },
   {
     id: "curriculumCommittee",
-    label: "4.1.5 ค่าตอบแทนกรรมการดำเนินการหลักสูตร",
-    group: "4.1 ค่าตอบแทน",
+    label: "ค่าตอบแทนกรรมการดำเนินการหลักสูตร",
+    group: "ค่าตอบแทน",
     fields: [
       { type: "select", name: "courseType", label: "ประเภทหลักสูตร", options: courseTypes, required: true },
       { type: "text", name: "academicYear", label: "ปีการศึกษา", placeholder: "เช่น 2568", required: true },
@@ -156,8 +160,8 @@ const categories = [
   },
   {
     id: "speaker",
-    label: "4.1.6 ค่าวิทยากร",
-    group: "4.1 ค่าตอบแทน",
+    label: "ค่าวิทยากร",
+    group: "ค่าตอบแทน",
     fields: [
       { type: "text", name: "projectName", label: "ชื่อโครงการ", required: true },
       { type: "text", name: "courseName", label: "ชื่อหลักสูตร", required: true },
@@ -167,8 +171,8 @@ const categories = [
   },
   {
     id: "pageCharge",
-    label: "4.2.1 ค่าใช้จ่ายสำหรับการตีพิมพ์ (Page charge)",
-    group: "4.2 ค่าใช้จ่ายในการเผยแพร่ผลงานวิชาการ",
+    label: "ค่าใช้จ่ายสำหรับการตีพิมพ์ (Page charge)",
+    group: "ค่าใช้จ่ายในการเผยแพร่ผลงานวิชาการ",
     fields: [
       { type: "text", name: "journalName", label: "ชื่อวารสาร", required: true },
       { type: "text", name: "articleName", label: "ชื่อบทความ", required: true },
@@ -178,8 +182,8 @@ const categories = [
   },
   {
     id: "conference",
-    label: "4.2.2 ค่าใช้จ่ายในการเดินทางไปเสนอผลงานวิชาการ (Conference)",
-    group: "4.2 ค่าใช้จ่ายในการเผยแพร่ผลงานวิชาการ",
+    label: "ค่าใช้จ่ายในการเดินทางไปเสนอผลงานวิชาการ (Conference)",
+    group: "ค่าใช้จ่ายในการเผยแพร่ผลงานวิชาการ",
     fields: [
       { type: "radio", name: "conferenceLevel", label: "ระดับการประชุมวิชาการ", options: ["ระดับชาติ", "ระดับนานาชาติ"], required: true },
       { type: "text", name: "conferenceName", label: "ชื่อการประชุมวิชาการ", required: true },
@@ -191,8 +195,8 @@ const categories = [
   },
   {
     id: "service",
-    label: "4.3 ค่าใช้สอย",
-    group: "4.3 ค่าใช้สอย",
+    label: "ค่าใช้สอย",
+    group: "ค่าใช้สอย",
     fields: [
       { type: "radio", name: "serviceType", label: "ประเภทค่าใช้สอย", options: ["ค่าลิขสิทธิ์ซอฟต์แวร์", "ค่าสมัครสมาชิก", "ค่าธรรมเนียม", "อื่น ๆ"], required: true },
       { type: "text", name: "serviceDetail", label: "รายละเอียดค่าใช้สอย", required: true },
@@ -201,8 +205,8 @@ const categories = [
   },
   {
     id: "material",
-    label: "4.4 ค่าวัสดุ",
-    group: "4.4 ค่าวัสดุ",
+    label: "ค่าวัสดุ",
+    group: "ค่าวัสดุ",
     fields: [
       { type: "radio", name: "materialType", label: "ประเภทค่าวัสดุ", options: ["คอมพิวเตอร์", "การศึกษา", "อื่น ๆ"], required: true },
       { type: "text", name: "materialDetail", label: "รายละเอียดค่าวัสดุ", required: true },
@@ -211,8 +215,8 @@ const categories = [
   },
   {
     id: "travel",
-    label: "4.5 ค่าเดินทาง",
-    group: "4.5 ค่าเดินทาง",
+    label: "ค่าเดินทาง",
+    group: "ค่าเดินทาง",
     fields: [
       { type: "radio", name: "travelType", label: "ประเภทค่าเดินทาง", options: ["ค่าเดินทางไปราชการ (ในประเทศ)", "ค่าเดินทางไปราชการ (ต่างประเทศ)", "ค่าเดินทางไปเจรจาธุรกิจ (ในประเทศ)", "ค่าเดินทางไปเจรจาธุรกิจ (ต่างประเทศ)"], required: true },
       { type: "text", name: "travelDetail", label: "เรื่อง/รายละเอียด", required: true },
