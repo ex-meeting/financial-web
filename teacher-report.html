@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>รายงานสรุปการเบิกจ่ายงบประมาณ</title>
+    <link rel="stylesheet" href="styles.css?v=20260703-1" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <div>
+          <p>รายงานสรุปการเบิกจ่ายงบประมาณ</p>
+          <strong id="topTeacherName">กำลังโหลดรายงาน</strong>
+        </div>
+      </div>
+      <div class="topbar__user" aria-label="สถานะรายงาน">
+        <span class="avatar" id="teacherAvatar">TR</span>
+        <div>
+          <strong id="reportStatus">พร้อมโหลดข้อมูล</strong>
+          <p id="lastUpdated">ยังไม่ได้โหลดข้อมูล</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="report-layout">
+      <section class="teacher-report-head" aria-label="ข้อมูลผู้ขอเบิก">
+        <div>
+          <span>ผู้ขอเบิก</span>
+          <strong id="teacherNameHeading">กำลังโหลดรายงาน</strong>
+        </div>
+        <p>แสดงเฉพาะรายการที่บันทึกจาก Web form</p>
+      </section>
+
+      <section class="report-toolbar" aria-label="ตัวกรองรายงาน">
+        <label class="field">
+          <span>ค้นหา</span>
+          <input id="searchInput" type="search" placeholder="เลขที่หนังสือ, หมวด, รายละเอียด, หมายเหตุ" />
+        </label>
+        <label class="field">
+          <span>ปีงบประมาณ</span>
+          <select id="fiscalYearFilter">
+            <option value="">ทุกปีงบประมาณ</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>หมวดค่าใช้จ่าย</span>
+          <select id="categoryFilter">
+            <option value="">ทุกหมวด</option>
+          </select>
+        </label>
+        <button class="button button--primary" id="reloadButton" type="button">โหลดข้อมูลใหม่</button>
+      </section>
+
+      <section class="report-cards" aria-label="สรุปรายงาน">
+        <article>
+          <span>จำนวนรายการทั้งหมด</span>
+          <strong id="totalRecords">0</strong>
+        </article>
+        <article>
+          <span>ผลลัพธ์หลังค้นหา</span>
+          <strong id="filteredRecords">0</strong>
+        </article>
+        <article>
+          <span>ยอดรวม</span>
+          <strong id="totalAmount">0.00 บาท</strong>
+        </article>
+      </section>
+
+      <section class="report-table-wrap" aria-label="ตารางรายงาน">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>เลขที่หนังสือ</th>
+              <th>ลงวันที่</th>
+              <th>ปีงบประมาณ</th>
+              <th>หมวดค่าใช้จ่าย</th>
+              <th>จำนวนเงิน</th>
+              <th>รายละเอียด</th>
+            </tr>
+          </thead>
+          <tbody id="reportBody">
+            <tr>
+              <td colspan="6" class="empty-cell">กำลังโหลดข้อมูลรายงาน...</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="teacher-report.js?v=20260703-1"></script>
+  </body>
+</html>

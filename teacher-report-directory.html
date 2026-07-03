@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ลิงก์รายงานสรุปการเบิกจ่ายงบประมาณ</title>
+    <link rel="stylesheet" href="styles.css?v=20260703-1" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <div>
+          <p>รายงานสรุปการเบิกจ่ายงบประมาณ</p>
+          <strong>ลิงก์รายงานสำหรับผู้ขอเบิก</strong>
+        </div>
+      </div>
+      <div class="topbar__user" aria-label="จำนวนรายงาน">
+        <span class="avatar">40</span>
+        <div>
+          <strong>รายงานเฉพาะบุคคล</strong>
+          <p>ใช้ลิงก์สำหรับ Embed ใน Google Sites</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="report-layout">
+      <section class="teacher-report-head" aria-label="คำอธิบาย">
+        <div>
+          <span>วิธีใช้งาน</span>
+          <strong>คัดลอกลิงก์ของผู้ขอเบิกแต่ละคนไป Embed ใน Google Sites</strong>
+        </div>
+        <p>ทุกลิงก์ใช้หน้า report กลางและกรองข้อมูลตามชื่อผู้ขอเบิกอัตโนมัติ</p>
+      </section>
+
+      <section class="report-toolbar" aria-label="ค้นหารายชื่อ">
+        <label class="field">
+          <span>ค้นหารายชื่อ</span>
+          <input id="teacherSearchInput" type="search" placeholder="พิมพ์ชื่อผู้ขอเบิก" />
+        </label>
+      </section>
+
+      <section class="report-table-wrap" aria-label="ตารางลิงก์รายงาน">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>ผู้ขอเบิก</th>
+              <th>URL สำหรับรายงาน</th>
+            </tr>
+          </thead>
+          <tbody id="teacherLinkBody">
+            <tr>
+              <td colspan="2" class="empty-cell">กำลังสร้างลิงก์รายงาน...</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="teacher-report-directory.js?v=20260703-1"></script>
+  </body>
+</html>
