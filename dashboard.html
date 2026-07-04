@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard สรุปการเบิกจ่ายงบประมาณ</title>
+    <link rel="stylesheet" href="styles.css?v=20260704-1" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__brand">
+        <div>
+          <p>รายงานข้อมูลจาก WebForm (Responses)</p>
+          <strong>Dashboard สรุปการเบิกจ่ายงบประมาณ</strong>
+        </div>
+      </div>
+      <div class="topbar__user" aria-label="สถานะ Dashboard">
+        <span class="avatar">DB</span>
+        <div>
+          <strong id="dashboardStatus">พร้อมโหลดข้อมูล</strong>
+          <p id="lastUpdated">ยังไม่ได้โหลดข้อมูล</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="report-layout">
+      <section class="report-toolbar dashboard-toolbar" aria-label="ตัวกรอง Dashboard">
+        <label class="field">
+          <span>ค้นหา</span>
+          <input id="searchInput" type="search" placeholder="เลขที่หนังสือ, ชื่อ, หมวด, รายละเอียด" />
+        </label>
+        <label class="field">
+          <span>ปีงบประมาณ</span>
+          <select id="fiscalYearFilter">
+            <option value="">ทุกปีงบประมาณ</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>หมวดค่าใช้จ่าย</span>
+          <select id="categoryFilter">
+            <option value="">ทุกหมวด</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>ผู้ขอเบิก</span>
+          <select id="teacherFilter">
+            <option value="">ทุกคน</option>
+          </select>
+        </label>
+        <div class="dashboard-actions">
+          <button class="button" id="clearButton" type="button">ล้างตัวกรอง</button>
+          <button class="button button--primary" id="reloadButton" type="button">โหลดข้อมูลใหม่</button>
+        </div>
+      </section>
+
+      <section class="report-cards dashboard-kpis" aria-label="สรุปตัวเลขสำคัญ">
+        <article>
+          <span>ยอดรวม</span>
+          <strong id="totalAmount">0.00 บาท</strong>
+        </article>
+        <article>
+          <span>จำนวนรายการ</span>
+          <strong id="totalRecords">0</strong>
+        </article>
+        <article>
+          <span>ผู้ขอเบิก</span>
+          <strong id="totalTeachers">0</strong>
+        </article>
+        <article>
+          <span>ยอดเฉลี่ยต่อรายการ</span>
+          <strong id="averageAmount">0.00 บาท</strong>
+        </article>
+      </section>
+
+      <section class="dashboard-grid" aria-label="กราฟ Dashboard">
+        <article class="dashboard-panel dashboard-panel--wide">
+          <div class="dashboard-panel__head">
+            <h2>ยอดเบิกตามหมวดค่าใช้จ่าย</h2>
+            <span id="categoryChartTotal">0.00 บาท</span>
+          </div>
+          <div class="bar-chart" id="categoryChart"></div>
+        </article>
+
+        <article class="dashboard-panel">
+          <div class="dashboard-panel__head">
+            <h2>สัดส่วนตามปีงบประมาณ</h2>
+          </div>
+          <div class="donut-wrap">
+            <div class="donut-chart" id="fiscalYearDonut" aria-label="กราฟวงกลมปีงบประมาณ"></div>
+            <div class="chart-legend" id="fiscalYearLegend"></div>
+          </div>
+        </article>
+
+        <article class="dashboard-panel">
+          <div class="dashboard-panel__head">
+            <h2>ยอดเบิกตามปีงบประมาณ</h2>
+          </div>
+          <div class="column-chart" id="fiscalYearColumnChart"></div>
+        </article>
+
+        <article class="dashboard-panel dashboard-panel--wide">
+          <div class="dashboard-panel__head">
+            <h2>ผู้ขอเบิกยอดสูงสุด 10 อันดับ</h2>
+          </div>
+          <div class="bar-chart" id="teacherChart"></div>
+        </article>
+      </section>
+
+      <section class="report-table-wrap" aria-label="ตารางรายการล่าสุด">
+        <table class="report-table">
+          <thead>
+            <tr>
+              <th>เลขที่หนังสือ</th>
+              <th>ลงวันที่</th>
+              <th>ปีงบประมาณ</th>
+              <th>ผู้ขอเบิก</th>
+              <th>หมวดค่าใช้จ่าย</th>
+              <th>จำนวนเงิน</th>
+            </tr>
+          </thead>
+          <tbody id="recentBody">
+            <tr>
+              <td colspan="6" class="empty-cell">กำลังโหลดข้อมูล Dashboard...</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="dashboard.js?v=20260704-1"></script>
+  </body>
+</html>
