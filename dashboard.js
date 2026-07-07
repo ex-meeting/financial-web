@@ -112,13 +112,47 @@ function updateFilteredRecords() {
   const category = elements.category.value;
   const teacher = elements.teacher.value;
 
-  state.filtered = state.records.filter((record) => {
-    if (fiscalYear && String(record.fiscalYear) !== fiscalYear) return false;
-    if (category && record.category !== category) return false;
-    if (teacher && record.teacherName !== teacher) return false;
-    if (!keyword) return true;
-    return createSearchText(record).includes(keyword);
-  });
+  state.filtered = state.records
+    .filter((record) => {
+      if (fiscalYear && String(record.fiscalYear) !== fiscalYear) return false;
+      if (category && record.category !== category) return false;
+      if (teacher && record.teacherName !== teacher) return false;
+      if (!keyword) return true;
+      return createSearchText(record).includes(keyword);
+    })
+    .sort(compareDashboardRecords);
+}
+
+function compareDashboardRecords(a, b) {
+  const fiscalYearDiff = getFiscalYearValue(b.fiscalYear) - getFiscalYearValue(a.fiscalYear);
+  if (fiscalYearDiff) return fiscalYearDiff;
+
+  const docNoDiff = compareDocNoDesc(a.docNo, b.docNo);
+  if (docNoDiff) return docNoDiff;
+
+  const docDateDiff = parseReportDate(b.docDate) - parseReportDate(a.docDate);
+  if (docDateDiff) return docDateDiff;
+
+  return getRowNumberValue(b.rowNumber) - getRowNumberValue(a.rowNumber);
+}
+
+function getFiscalYearValue(value) {
+  const number = Number(String(value || "").replace(/[^\d.-]/g, ""));
+  return Number.isFinite(number) ? number : 0;
+}
+
+function compareDocNoDesc(a, b) {
+  const left = String(a || "").trim();
+  const right = String(b || "").trim();
+  if (!left && !right) return 0;
+  if (!left) return 1;
+  if (!right) return -1;
+  return right.localeCompare(left, "th", { numeric: true, sensitivity: "base" });
+}
+
+function getRowNumberValue(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : 0;
 }
 
 function createSearchText(record) {
@@ -350,6 +384,24 @@ function formatReportDate(value) {
   }
 
   return text;
+}
+
+function parseReportDate(value) {
+  if (!value) return 0;
+  const text = String(value).trim();
+  const thaiDateMatch = /^(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})$/.exec(text);
+
+  if (thaiDateMatch) {
+    const day = Number(thaiDateMatch[1]);
+    const month = Number(thaiDateMatch[2]) - 1;
+    let year = Number(thaiDateMatch[3]);
+    if (year < 100) year += 2500;
+    if (year > 2400) year -= 543;
+    return Date.UTC(year, month, day);
+  }
+
+  const parsed = new Date(text);
+  return Number.isNaN(parsed.getTime()) ? 0 : parsed.getTime();
 }
 
 function normalizeText(value) {
