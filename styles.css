@@ -674,6 +674,44 @@ menu {
   white-space: nowrap;
 }
 
+.dashboard-recent-table {
+  min-width: 980px;
+  table-layout: fixed;
+}
+
+.dashboard-recent-table th:nth-child(1),
+.dashboard-recent-table td:nth-child(1) {
+  width: 16%;
+}
+
+.dashboard-recent-table th:nth-child(2),
+.dashboard-recent-table td:nth-child(2) {
+  width: 11%;
+}
+
+.dashboard-recent-table th:nth-child(3),
+.dashboard-recent-table td:nth-child(3) {
+  width: 11%;
+}
+
+.dashboard-recent-table th:nth-child(4),
+.dashboard-recent-table td:nth-child(4) {
+  width: 24%;
+}
+
+.dashboard-recent-table th:nth-child(5),
+.dashboard-recent-table td:nth-child(5) {
+  width: 20%;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-recent-table th:nth-child(6),
+.dashboard-recent-table td:nth-child(6) {
+  width: 18%;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .detail-chip {
   display: block;
   margin: 0 0 4px;
