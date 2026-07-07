@@ -230,6 +230,7 @@ const categories = [
 ];
 
 const form = document.querySelector("#expenseForm");
+const submitButton = form.querySelector('button[type="submit"]');
 const teacherSelect = document.querySelector("#teacherName");
 const categorySelect = document.querySelector("#category");
 const dynamicFields = document.querySelector("#dynamicFields");
@@ -240,6 +241,7 @@ const docDatePicker = document.querySelector("[data-thai-date-picker]");
 const docDateInput = document.querySelector("#docDate");
 const fiscalYearInput = document.querySelector("#fiscalYear");
 let shouldResetAfterResult = false;
+const submitButtonText = submitButton.textContent;
 
 function option(value, label, selected = false) {
   const item = document.createElement("option");
@@ -445,6 +447,11 @@ function resetFormForNextEntry() {
   shouldResetAfterResult = false;
 }
 
+function setSubmitting(isSubmitting) {
+  submitButton.disabled = isSubmitting;
+  submitButton.textContent = isSubmitting ? "กำลังบันทึก..." : submitButtonText;
+}
+
 const thaiMonths = [
   "มกราคม",
   "กุมภาพันธ์",
@@ -648,11 +655,18 @@ async function saveToGoogleSheet(payload) {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!form.reportValidity()) return;
-  const payload = getFormData();
-  localStorage.setItem("facultyExpenseDraft", JSON.stringify(payload));
-  await saveToGoogleSheet(payload);
-  shouldResetAfterResult = true;
-  showResult(payload);
+  setSubmitting(true);
+  try {
+    const payload = getFormData();
+    localStorage.setItem("facultyExpenseDraft", JSON.stringify(payload));
+    await saveToGoogleSheet(payload);
+    shouldResetAfterResult = true;
+    showResult(payload);
+  } catch (error) {
+    alert(`บันทึกข้อมูลไม่สำเร็จ: ${error.message}`);
+  } finally {
+    setSubmitting(false);
+  }
 });
 
 resultDialog.addEventListener("close", () => {
