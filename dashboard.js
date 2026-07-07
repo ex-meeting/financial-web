@@ -1,10 +1,12 @@
 const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyycg6JrhmbMHLcS20WRhwgjHE_B5_tRCEcJMyV5AJCNc2o5lXOKMqmBoTKY2-0HOa8/exec";
 
 const chartColors = ["#0b5cab", "#0f766e", "#c46a08", "#7c3aed", "#dc2626", "#0891b2", "#4d7c0f", "#be185d"];
+const RECENT_RECORD_LIMIT = 10;
 
 const state = {
   records: [],
-  filtered: []
+  filtered: [],
+  recentPage: 1
 };
 
 const elements = {
@@ -26,7 +28,8 @@ const elements = {
   fiscalYearLegend: document.querySelector("#fiscalYearLegend"),
   fiscalYearColumnChart: document.querySelector("#fiscalYearColumnChart"),
   teacherChart: document.querySelector("#teacherChart"),
-  recentBody: document.querySelector("#recentBody")
+  recentBody: document.querySelector("#recentBody"),
+  recentPagination: document.querySelector("#recentPagination")
 };
 
 function loadResponses() {
@@ -98,6 +101,12 @@ function uniqueValues(key) {
 }
 
 function applyFilters() {
+  state.recentPage = 1;
+  updateFilteredRecords();
+  renderDashboard();
+}
+
+function updateFilteredRecords() {
   const keyword = normalizeText(elements.search.value);
   const fiscalYear = elements.fiscalYear.value;
   const category = elements.category.value;
@@ -110,8 +119,6 @@ function applyFilters() {
     if (!keyword) return true;
     return createSearchText(record).includes(keyword);
   });
-
-  renderDashboard();
 }
 
 function createSearchText(record) {
@@ -238,10 +245,16 @@ function renderColumnChart(rows) {
 function renderRecentRows() {
   if (!state.filtered.length) {
     elements.recentBody.innerHTML = '<tr><td colspan="6" class="empty-cell">ไม่พบข้อมูลตามเงื่อนไขที่เลือก</td></tr>';
+    renderRecentPagination();
     return;
   }
 
-  elements.recentBody.innerHTML = state.filtered.slice(0, 12).map((record) => `
+  const totalPages = getRecentTotalPages();
+  if (state.recentPage > totalPages) state.recentPage = totalPages;
+  const startIndex = (state.recentPage - 1) * RECENT_RECORD_LIMIT;
+  const pageRecords = state.filtered.slice(startIndex, startIndex + RECENT_RECORD_LIMIT);
+
+  elements.recentBody.innerHTML = pageRecords.map((record) => `
     <tr>
       <td>${escapeHtml(record.docNo)}</td>
       <td>${escapeHtml(formatReportDate(record.docDate))}</td>
@@ -251,6 +264,49 @@ function renderRecentRows() {
       <td class="amount-cell">${escapeHtml(formatMoney(getAmount(record.details)))}</td>
     </tr>
   `).join("");
+  renderRecentPagination();
+}
+
+function renderRecentPagination() {
+  const totalRecords = state.filtered.length;
+  const totalPages = getRecentTotalPages();
+
+  if (!totalRecords || totalPages <= 1) {
+    elements.recentPagination.innerHTML = totalRecords
+      ? `<span>แสดง ${totalRecords.toLocaleString("th-TH")} รายการ</span>`
+      : "";
+    return;
+  }
+
+  const startRecord = (state.recentPage - 1) * RECENT_RECORD_LIMIT + 1;
+  const endRecord = Math.min(state.recentPage * RECENT_RECORD_LIMIT, totalRecords);
+  const pageButtons = Array.from({ length: totalPages }, (_, index) => index + 1)
+    .map((page) => `
+      <button class="pagination-button ${page === state.recentPage ? "is-active" : ""}" type="button" data-page="${page}" data-page-kind="number" aria-label="หน้า ${page}">
+        ${page}
+      </button>
+    `)
+    .join("");
+
+  elements.recentPagination.innerHTML = `
+    <span>แสดง ${startRecord.toLocaleString("th-TH")}-${endRecord.toLocaleString("th-TH")} จาก ${totalRecords.toLocaleString("th-TH")} รายการ</span>
+    <div class="pagination-buttons">
+      <button class="pagination-button" type="button" data-page="${state.recentPage - 1}" data-page-kind="prev" ${state.recentPage === 1 ? "disabled" : ""}>ก่อนหน้า</button>
+      ${pageButtons}
+      <button class="pagination-button" type="button" data-page="${state.recentPage + 1}" data-page-kind="next" ${state.recentPage === totalPages ? "disabled" : ""}>ถัดไป</button>
+    </div>
+  `;
+}
+
+function getRecentTotalPages() {
+  return Math.max(Math.ceil(state.filtered.length / RECENT_RECORD_LIMIT), 1);
+}
+
+function goToRecentPage(page) {
+  const nextPage = Math.min(Math.max(Number(page), 1), getRecentTotalPages());
+  if (nextPage === state.recentPage) return;
+  state.recentPage = nextPage;
+  renderRecentRows();
 }
 
 function clearFilters() {
@@ -315,5 +371,10 @@ elements.search.addEventListener("input", applyFilters);
 elements.fiscalYear.addEventListener("change", applyFilters);
 elements.category.addEventListener("change", applyFilters);
 elements.teacher.addEventListener("change", applyFilters);
+elements.recentPagination.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-page]");
+  if (!button || button.disabled) return;
+  goToRecentPage(button.dataset.page);
+});
 
 loadResponses();

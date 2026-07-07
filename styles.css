@@ -712,6 +712,47 @@ menu {
   white-space: nowrap;
 }
 
+.dashboard-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.pagination-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.pagination-button {
+  min-width: 36px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.pagination-button:hover:not(:disabled),
+.pagination-button.is-active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+.pagination-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
 .detail-chip {
   display: block;
   margin: 0 0 4px;
@@ -1009,5 +1050,14 @@ menu {
 
   .column-chart {
     overflow-x: auto;
+  }
+
+  .dashboard-pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pagination-buttons {
+    justify-content: flex-start;
   }
 }
