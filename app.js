@@ -71,7 +71,9 @@ const majors = [
   "วิทยาการข้อมูลและการวิเคราะห์เชิงธุรกิจ",
   "เทคโนโลยีสารสนเทศทางธุรกิจ (นานาชาติ)",
   "เทคโนโลยีปัญญาประดิษฐ์",
-  "ปัญญาประดิษฐ์เพื่อการวิเคราะห์เชิงธุรกิจ"
+  "ปัญญาประดิษฐ์เพื่อการวิเคราะห์เชิงธุรกิจ",
+  "เทคโนโลยีสารสนเทศ (นานาชาติ)",
+  "ปัญญาประดิษฐ์เพื่อการวิเคราะห์เชิงธุรกิจ (นานาชาติ)"
 ];
 
 const courseTypes = [
@@ -111,7 +113,7 @@ const categories = [
     fields: [
       { type: "radio", name: "advisorType", label: "ประเภทอาจารย์ที่ปรึกษา (ระดับการศึกษา)", options: studyExpenseTypes, required: true },
       { type: "select", name: "major", label: "สาขาวิชา", options: majors, required: true },
-      { type: "text", name: "topic", label: "ชื่อหัวข้อ", required: true },
+      { type: "text", name: "topic", label: "ชื่อหัวข้อ/จำนวนเรื่อง", required: true },
       { type: "text", name: "semester", label: "ภาคการศึกษา/ปีการศึกษา", placeholder: "เช่น 1/2568", required: true },
       { type: "money", name: "amount", label: "จำนวนเงิน", required: true }
     ]
@@ -123,7 +125,7 @@ const categories = [
     fields: [
       { type: "radio", name: "examType", label: "ประเภทกรรมการสอบ (ระดับการศึกษา)", options: examExpenseTypes, required: true },
       { type: "select", name: "major", label: "สาขาวิชา", options: majors, required: true },
-      { type: "text", name: "topic", label: "ชื่อหัวข้อ", required: true },
+      { type: "text", name: "topic", label: "ชื่อหัวข้อ/จำนวนเรื่อง", required: true },
       { type: "text", name: "semester", label: "ภาคการศึกษา/ปีการศึกษา", required: true },
       { type: "money", name: "amount", label: "จำนวนเงิน", required: true }
     ]
