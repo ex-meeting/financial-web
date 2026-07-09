@@ -47,7 +47,7 @@ const linkBody = document.querySelector("#teacherLinkBody");
 function buildTeacherReportUrl(name) {
   const url = new URL("teacher-report.html", window.location.href);
   url.searchParams.set("name", name);
-  url.searchParams.set("v", "20260703-1");
+  url.searchParams.set("v", "20260709-1");
   return url.href;
 }
 
