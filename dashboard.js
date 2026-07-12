@@ -1,4 +1,4 @@
-const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyycg6JrhmbMHLcS20WRhwgjHE_B5_tRCEcJMyV5AJCNc2o5lXOKMqmBoTKY2-0HOa8/exec";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzgv0iBmCXTu5J3rRvccsqXrwyZ-TOh2n9BM-HJyXKzZ2SA5n6Uku7EF4hnYd-WUC97/exec";
 
 const chartColors = ["#0b5cab", "#0f766e", "#c46a08", "#7c3aed", "#dc2626", "#0891b2", "#4d7c0f", "#be185d"];
 const RECENT_RECORD_LIMIT = 10;
