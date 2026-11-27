@@ -766,11 +766,13 @@ menu {
 }
 
 .dashboard-toolbar {
-  grid-template-columns: minmax(220px, 1.2fr) repeat(3, minmax(160px, 1fr)) auto;
+  grid-template-columns: minmax(180px, 1.2fr) repeat(4, minmax(0, 1fr));
 }
 
 .dashboard-actions {
   display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
   gap: 10px;
 }
 

@@ -16,6 +16,7 @@ const elements = {
   search: document.querySelector("#searchInput"),
   fiscalYear: document.querySelector("#fiscalYearFilter"),
   category: document.querySelector("#categoryFilter"),
+  teacherType: document.querySelector("#teacherTypeFilter"),
   teacher: document.querySelector("#teacherFilter"),
   clear: document.querySelector("#clearButton"),
   reload: document.querySelector("#reloadButton"),
@@ -88,8 +89,11 @@ function populateFilters() {
 
 function populateTeacherFilter() {
   const year = elements.fiscalYear.value;
-  const records = year ? state.records.filter((record) => String(record.fiscalYear).trim() === year) : state.records;
-  const historicalNames = year ? (HISTORICAL_TEACHERS_BY_YEAR[year] || []) : Object.values(HISTORICAL_TEACHERS_BY_YEAR).flat();
+  const type = elements.teacherType.value;
+  const records = state.records.filter((record) => matchesYearAndTeacherType(record, year, type));
+  const historicalNames = type ? [] : year
+    ? (HISTORICAL_TEACHERS_BY_YEAR[year] || [])
+    : Object.values(HISTORICAL_TEACHERS_BY_YEAR).flat();
   const names = new Map();
   [...historicalNames, ...records.map((record) => record.teacherName)].forEach((name) => {
     const key = normalizeText(name);
@@ -128,17 +132,23 @@ function updateFilteredRecords() {
   const keyword = normalizeText(elements.search.value);
   const fiscalYear = elements.fiscalYear.value;
   const category = elements.category.value;
+  const teacherType = elements.teacherType.value;
   const teacher = normalizeText(elements.teacher.value);
 
   state.filtered = state.records
     .filter((record) => {
-      if (fiscalYear && String(record.fiscalYear).trim() !== fiscalYear) return false;
+      if (!matchesYearAndTeacherType(record, fiscalYear, teacherType)) return false;
       if (category && record.category !== category) return false;
       if (teacher && normalizeText(record.teacherName) !== teacher) return false;
       if (!keyword) return true;
       return createSearchText(record).includes(keyword);
     })
     .sort(compareDashboardRecords);
+}
+
+function matchesYearAndTeacherType(record, year, type) {
+  return (!year || String(record.fiscalYear).trim() === year)
+    && (!type || String(record.teacherType || "").trim() === type);
 }
 
 function compareDashboardRecords(a, b) {
@@ -365,6 +375,7 @@ function clearFilters() {
   elements.search.value = "";
   elements.fiscalYear.value = "";
   elements.category.value = "";
+  elements.teacherType.value = "";
   elements.teacher.value = "";
   populateTeacherFilter();
   applyFilters();
@@ -439,10 +450,13 @@ function escapeHtml(value) {
 elements.reload.addEventListener("click", loadResponses);
 elements.clear.addEventListener("click", clearFilters);
 elements.search.addEventListener("input", applyFilters);
-elements.fiscalYear.addEventListener("change", () => {
+function applyTeacherFilters() {
   populateTeacherFilter();
   applyFilters();
-});
+}
+
+elements.fiscalYear.addEventListener("change", applyTeacherFilters);
+elements.teacherType.addEventListener("change", applyTeacherFilters);
 elements.category.addEventListener("change", applyFilters);
 elements.teacher.addEventListener("change", applyFilters);
 elements.recentPagination.addEventListener("click", (event) => {
