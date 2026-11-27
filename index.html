@@ -44,6 +44,10 @@
             <dd id="summaryFiscalYear">ยังไม่ได้ระบุ</dd>
           </div>
           <div>
+            <dt>ประเภทอาจารย์</dt>
+            <dd id="summaryTeacherType">ยังไม่ได้เลือก</dd>
+          </div>
+          <div>
             <dt>ชื่อผู้ขอเบิก</dt>
             <dd id="summaryTeacher">ยังไม่ได้เลือก</dd>
           </div>
@@ -82,7 +86,7 @@
             <div class="section-heading">
               <h2 id="section-basic">ข้อมูลหนังสือและผู้ขอเบิก</h2>
             </div>
-            <div class="form-grid form-grid--four">
+            <div class="form-grid form-grid--three">
               <label class="field">
                 <span>เลขที่หนังสือ <b>*</b></span>
                 <input id="docNo" name="docNo" type="text" placeholder="เช่น อว 0702.02/1234" required />
@@ -100,14 +104,22 @@
                 <input id="fiscalYear" name="fiscalYear" type="number" min="2500" max="2700" placeholder="เช่น 2569" required />
               </label>
               <label class="field">
+                <span>ประเภทอาจารย์ <b>*</b></span>
+                <select id="teacherType" name="teacherType" required disabled>
+                  <option value="">-- เลือกประเภทอาจารย์ --</option>
+                  <option value="อาจารย์ประจำ">อ.ประจำ</option>
+                  <option id="specialTeacherType" value="อาจารย์พิเศษ">อ.พิเศษ</option>
+                </select>
+              </label>
+              <label class="field">
                 <span>ชื่อผู้ขอเบิก <b>*</b></span>
-                <select id="teacherName" name="teacherName" required></select>
+                <select id="teacherName" name="teacherName" required disabled></select>
+              </label>
+              <label class="field">
+                <span>หมวดหมู่ค่าใช้จ่าย <b>*</b></span>
+                <select id="category" name="category" required></select>
               </label>
             </div>
-            <label class="field">
-              <span>หมวดหมู่ค่าใช้จ่าย <b>*</b></span>
-              <select id="category" name="category" required></select>
-            </label>
           </section>
 
           <section class="form-section" aria-labelledby="section-detail">
@@ -162,6 +174,6 @@
       </form>
     </dialog>
 
-    <script src="app.js?v=20261127-2"></script>
+    <script src="app.js?v=20261127-3"></script>
   </body>
 </html>

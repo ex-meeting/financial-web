@@ -238,6 +238,8 @@ const categories = [
 const form = document.querySelector("#expenseForm");
 const submitButton = form.querySelector('button[type="submit"]');
 const teacherSelect = document.querySelector("#teacherName");
+const teacherTypeSelect = document.querySelector("#teacherType");
+const specialTeacherTypeOption = document.querySelector("#specialTeacherType");
 const categorySelect = document.querySelector("#category");
 const dynamicFields = document.querySelector("#dynamicFields");
 const categoryHint = document.querySelector("#categoryHint");
@@ -399,6 +401,7 @@ function getFormData() {
     docNo: data.get("docNo") || "",
     docDate: data.get("docDate") || "",
     fiscalYear: data.get("fiscalYear") || "",
+    teacherType: data.get("teacherType") || "",
     teacherName: data.get("teacherName") || "",
     category: selectedCategory ? selectedCategory.label : "",
     categoryGroup: selectedCategory ? selectedCategory.group : "",
@@ -431,6 +434,7 @@ function updateSummary() {
   document.querySelector("#summaryDocNo").textContent = payload.docNo || "ยังไม่ได้ระบุ";
   document.querySelector("#summaryDate").textContent = payload.docDate || "ยังไม่ได้ระบุ";
   document.querySelector("#summaryFiscalYear").textContent = payload.fiscalYear || "ยังไม่ได้ระบุ";
+  document.querySelector("#summaryTeacherType").textContent = payload.teacherType || "ยังไม่ได้เลือก";
   document.querySelector("#summaryTeacher").textContent = payload.teacherName || "ยังไม่ได้เลือก";
   document.querySelector("#summaryCategory").textContent = payload.category ? stripCategoryNumber(payload.category) : "ยังไม่ได้เลือก";
   document.querySelector("#summaryAmount").textContent = formatMoney(payload.details.amount);
@@ -504,23 +508,19 @@ function calculateFiscalYear(date) {
 function renderTeacherOptions() {
   const selectedTeacher = teacherSelect.value;
   const specialTeachers = specialTeachersByFiscalYear[fiscalYearInput.valueAsNumber] || [];
-  fillSelect(teacherSelect, "-- เลือกชื่อผู้ขอเบิก --", specialTeachers.length ? [] : teachers);
-
-  if (specialTeachers.length) {
-    const groups = [
-      ["อาจารย์ประจำ", teachers.filter((name) => !specialTeachers.includes(name))],
-      ["อาจารย์พิเศษ", specialTeachers]
-    ];
-    groups.forEach(([label, names]) => {
-      const group = document.createElement("optgroup");
-      group.label = label;
-      names.forEach((name) => group.append(option(name, name)));
-      teacherSelect.append(group);
-    });
+  teacherTypeSelect.disabled = !fiscalYearInput.validity.valid;
+  specialTeacherTypeOption.disabled = specialTeachers.length === 0;
+  if (teacherTypeSelect.disabled || (specialTeacherTypeOption.disabled && teacherTypeSelect.value === specialTeacherTypeOption.value)) {
+    teacherTypeSelect.value = "";
   }
 
-  const hasSelectedTeacher = Array.from(teacherSelect.options).some((item) => item.value === selectedTeacher);
-  teacherSelect.value = hasSelectedTeacher ? selectedTeacher : "";
+  const type = teacherTypeSelect.value;
+  const names = !type ? [] : type === specialTeacherTypeOption.value
+    ? specialTeachers
+    : teachers.filter((name) => !specialTeachers.includes(name));
+  teacherSelect.disabled = !type;
+  fillSelect(teacherSelect, "-- เลือกชื่อผู้ขอเบิก --", names);
+  teacherSelect.value = names.includes(selectedTeacher) ? selectedTeacher : "";
 }
 
 function syncFiscalYearFromDocDate() {
@@ -664,6 +664,7 @@ docDateInput.addEventListener("input", syncFiscalYearFromDocDate);
 docDateInput.addEventListener("change", syncFiscalYearFromDocDate);
 fiscalYearInput.addEventListener("input", renderTeacherOptions);
 fiscalYearInput.addEventListener("change", renderTeacherOptions);
+teacherTypeSelect.addEventListener("change", renderTeacherOptions);
 form.addEventListener("input", updateSummary);
 form.addEventListener("change", updateSummary);
 
