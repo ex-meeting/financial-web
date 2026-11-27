@@ -1,3 +1,7 @@
+const specialTeachersByFiscalYear = {
+  2570: ["ผศ.อัครินทร์ คุณกิตติ"]
+};
+
 const teachers = [
   "ศ.ดร.อาริต ธรรมโน",
   "ศ.ดร.สุขสันต์ พาณิชพาพิบูล",
@@ -444,6 +448,7 @@ function showResult(payload) {
 
 function resetFormForNextEntry() {
   form.reset();
+  renderTeacherOptions();
   renderDynamicFields();
   localStorage.removeItem("facultyExpenseDraft");
   shouldResetAfterResult = false;
@@ -496,13 +501,32 @@ function calculateFiscalYear(date) {
   return date.getMonth() >= 9 ? buddhistYear + 1 : buddhistYear;
 }
 
+function renderTeacherOptions() {
+  const selectedTeacher = teacherSelect.value;
+  const specialTeachers = specialTeachersByFiscalYear[fiscalYearInput.valueAsNumber] || [];
+  fillSelect(teacherSelect, "-- เลือกชื่อผู้ขอเบิก --", specialTeachers.length ? [] : teachers);
+
+  if (specialTeachers.length) {
+    const groups = [
+      ["อาจารย์ประจำ", teachers.filter((name) => !specialTeachers.includes(name))],
+      ["อาจารย์พิเศษ", specialTeachers]
+    ];
+    groups.forEach(([label, names]) => {
+      const group = document.createElement("optgroup");
+      group.label = label;
+      names.forEach((name) => group.append(option(name, name)));
+      teacherSelect.append(group);
+    });
+  }
+
+  const hasSelectedTeacher = Array.from(teacherSelect.options).some((item) => item.value === selectedTeacher);
+  teacherSelect.value = hasSelectedTeacher ? selectedTeacher : "";
+}
+
 function syncFiscalYearFromDocDate() {
   const date = parseThaiShortDate(docDateInput.value);
-  if (!date) {
-    fiscalYearInput.value = "";
-    return;
-  }
-  fiscalYearInput.value = String(calculateFiscalYear(date));
+  fiscalYearInput.value = date ? String(calculateFiscalYear(date)) : "";
+  renderTeacherOptions();
 }
 
 function createYearOptions(selectedYear) {
@@ -631,13 +655,15 @@ function initThaiDatePicker(picker) {
 }
 
 initThaiDatePicker(docDatePicker);
-fillSelect(teacherSelect, "-- เลือกชื่อผู้ขอเบิก --", teachers);
+renderTeacherOptions();
 fillCategorySelect(categorySelect, "-- เลือกหมวดหมู่ค่าใช้จ่าย --", categories);
 renderDynamicFields();
 
 categorySelect.addEventListener("change", renderDynamicFields);
 docDateInput.addEventListener("input", syncFiscalYearFromDocDate);
 docDateInput.addEventListener("change", syncFiscalYearFromDocDate);
+fiscalYearInput.addEventListener("input", renderTeacherOptions);
+fiscalYearInput.addEventListener("change", renderTeacherOptions);
 form.addEventListener("input", updateSummary);
 form.addEventListener("change", updateSummary);
 
