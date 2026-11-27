@@ -2,6 +2,7 @@ const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzgv0i
 
 const chartColors = ["#0b5cab", "#0f766e", "#c46a08", "#7c3aed", "#dc2626", "#0891b2", "#4d7c0f", "#be185d"];
 const RECENT_RECORD_LIMIT = 10;
+const HISTORICAL_TEACHERS_BY_YEAR = { "2569": ["ผศ.อัครินทร์ คุณกิตติ"] };
 
 const state = {
   records: [],
@@ -78,9 +79,23 @@ function showError(message) {
 }
 
 function populateFilters() {
-  fillFilter(elements.fiscalYear, "ทุกปีงบประมาณ", uniqueValues("fiscalYear"));
+  fillFilter(elements.fiscalYear, "ทุกปีงบประมาณ", sortedUniqueValues([
+    ...uniqueValues("fiscalYear"), ...Object.keys(HISTORICAL_TEACHERS_BY_YEAR)
+  ]));
   fillFilter(elements.category, "ทุกหมวด", uniqueValues("category"));
-  fillFilter(elements.teacher, "ทุกคน", uniqueValues("teacherName"));
+  populateTeacherFilter();
+}
+
+function populateTeacherFilter() {
+  const year = elements.fiscalYear.value;
+  const records = year ? state.records.filter((record) => String(record.fiscalYear).trim() === year) : state.records;
+  const historicalNames = year ? (HISTORICAL_TEACHERS_BY_YEAR[year] || []) : Object.values(HISTORICAL_TEACHERS_BY_YEAR).flat();
+  const names = new Map();
+  [...historicalNames, ...records.map((record) => record.teacherName)].forEach((name) => {
+    const key = normalizeText(name);
+    if (key && !names.has(key)) names.set(key, String(name).trim());
+  });
+  fillFilter(elements.teacher, "ทุกคน", sortedUniqueValues([...names.values()]));
 }
 
 function fillFilter(select, placeholder, values) {
@@ -96,8 +111,11 @@ function fillFilter(select, placeholder, values) {
 }
 
 function uniqueValues(key) {
-  return [...new Set(state.records.map((record) => String(record[key] || "").trim()).filter(Boolean))]
-    .sort((a, b) => a.localeCompare(b, "th"));
+  return sortedUniqueValues(state.records.map((record) => String(record[key] || "").trim()).filter(Boolean));
+}
+
+function sortedUniqueValues(values) {
+  return [...new Set(values)].sort((a, b) => a.localeCompare(b, "th"));
 }
 
 function applyFilters() {
@@ -110,13 +128,13 @@ function updateFilteredRecords() {
   const keyword = normalizeText(elements.search.value);
   const fiscalYear = elements.fiscalYear.value;
   const category = elements.category.value;
-  const teacher = elements.teacher.value;
+  const teacher = normalizeText(elements.teacher.value);
 
   state.filtered = state.records
     .filter((record) => {
-      if (fiscalYear && String(record.fiscalYear) !== fiscalYear) return false;
+      if (fiscalYear && String(record.fiscalYear).trim() !== fiscalYear) return false;
       if (category && record.category !== category) return false;
-      if (teacher && record.teacherName !== teacher) return false;
+      if (teacher && normalizeText(record.teacherName) !== teacher) return false;
       if (!keyword) return true;
       return createSearchText(record).includes(keyword);
     })
@@ -348,6 +366,7 @@ function clearFilters() {
   elements.fiscalYear.value = "";
   elements.category.value = "";
   elements.teacher.value = "";
+  populateTeacherFilter();
   applyFilters();
 }
 
@@ -420,7 +439,10 @@ function escapeHtml(value) {
 elements.reload.addEventListener("click", loadResponses);
 elements.clear.addEventListener("click", clearFilters);
 elements.search.addEventListener("input", applyFilters);
-elements.fiscalYear.addEventListener("change", applyFilters);
+elements.fiscalYear.addEventListener("change", () => {
+  populateTeacherFilter();
+  applyFilters();
+});
 elements.category.addEventListener("change", applyFilters);
 elements.teacher.addEventListener("change", applyFilters);
 elements.recentPagination.addEventListener("click", (event) => {
